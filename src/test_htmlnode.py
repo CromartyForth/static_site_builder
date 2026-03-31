@@ -97,3 +97,7 @@ class TestParentNode(unittest.TestCase):
         parent_node = ParentNode(tag, [], None)
         with self.assertRaises(ValueError):
             parent_node.to_html()
+
+
+if __name__ == "__main__":
+    unittest.main()
