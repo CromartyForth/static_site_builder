@@ -6,7 +6,7 @@ from textnode import TextNode, TextType
 class TestSplitDelimiter(unittest.TestCase):
 
     def test_eq(self):
-        node = "This is text with a `code block` word"
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
         delimiter = "`"
         delimiterTextType = TextType.CODE
 
@@ -20,7 +20,7 @@ class TestSplitDelimiter(unittest.TestCase):
 
 
     def test_leading_block(self):
-        node = "**Be Bold** lead from the front"
+        node = TextNode("**Be Bold** lead from the front", TextType.TEXT)
         delimiter = "**"
         delimiterTextType = TextType.BOLD
 
@@ -33,7 +33,7 @@ class TestSplitDelimiter(unittest.TestCase):
 
 
     def test_trailing_block(self):
-        node = "Shout from the back *This is irony*"
+        node = TextNode("Shout from the back *This is irony*", TextType.TEXT)
         delimiter = "*"
         delimiterTextType = TextType.ITALIC
 
@@ -46,7 +46,7 @@ class TestSplitDelimiter(unittest.TestCase):
 
 
     def test_double_block(self):
-        node = "**Shout** from the back **You Suck!**"
+        node = TextNode("**Shout** from the back **You Suck!**", TextType.TEXT)
         delimiter = "**"
         delimiterTextType = TextType.BOLD
 
@@ -59,7 +59,7 @@ class TestSplitDelimiter(unittest.TestCase):
         self.assertEqual(result, expected)
     
     def test_missing_delimiator(self):
-        node = "**Shout** from the back **You Suck!"
+        node = TextNode("**Shout** from the back **You Suck!", TextType.TEXT)
         delimiter = "**"
         delimiterTextType = TextType.BOLD
 

@@ -2,7 +2,7 @@ from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
 def text_node_to_html_node(text_node):
-    print(hasattr(text_node,"children"))
+    
     if hasattr(text_node,"children") == False:
         match text_node.text_type:
             case TextType.TEXT:

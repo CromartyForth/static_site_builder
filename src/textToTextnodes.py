@@ -1,14 +1,18 @@
 from textnode import TextNode, TextType
+from splitDelimiter import split_nodes_delimiter
+from extractMarkdownImagesLinks import split_nodes_image, split_nodes_link
 
 def text_to_textnodes(text):
-    new_nodes = []
     originalNode = TextNode(text, TextType.TEXT, None)
-    # the first call to the splitDelimiter is going to return a list of TextNodes
-    # should we make the text into a TextNode and so every call then uses the same node.text
-
-    # call all the things!
+    new_nodes = [originalNode]
     
-    # call **bold** before *italic*
-
+    # call all the things!
+    new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
+    new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
+    new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+    
+    #extract links and images
+    new_nodes = split_nodes_image(new_nodes)
+    new_nodes = split_nodes_link(new_nodes)
 
     return new_nodes
