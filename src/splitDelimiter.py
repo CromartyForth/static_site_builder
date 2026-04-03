@@ -25,12 +25,3 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                     new_nodes.append(TextNode(value, TextType.TEXT))
     
     return new_nodes
-
-
-
-
-
-
-
-
-    return
