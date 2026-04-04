@@ -1,4 +1,10 @@
-from blocktypes import BlockType, block_to_block_type, create_heading_html_node
+from blocktypes import (
+    BlockType, 
+    block_to_block_type, 
+    create_heading_html_node, 
+    create_code_html_node,
+    create_unordered_list_html_node
+)
 from markdownToBlocks import markdown_to_blocks
 from textToTextnodes import text_to_textnodes
 from nodeTextToHTML import text_node_to_html_node
@@ -17,22 +23,39 @@ def markdown_to_html_node(markdown):
         match block_type:
             case BlockType.HEADING:
                 block_HTML_node = create_heading_html_node(block)
-            
+                children = text_to_children(block_HTML_node.value)
+                blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
+
             case BlockType.CODE:
                 block_HTML_node = create_code_html_node(block)
-        
+                children = text_to_children(block_HTML_node.value)
+                blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
+            
+            case BlockType.UNORDEREDLIST:
+                block_HTML_node = create_unordered_list_html_node(block)
+                block_children = block_HTML_node.value.split()
+                
+                # block of text needs to be treated line by line for lists.
+                li_children = [] #list items
+                for block_child in block_children:
+                    children = text_to_children(child)
+                    li_children.append(ParentNode("li", block_child, None))
+
+                ol_parent = ParentNode("ol", li_children, None) #unorderedlist
+                
+                blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
 
 
         # get the children from the parentNode.value
         # assign the proper child HTMLnode objects to the block node
         # unless you are a code block
-        if block_type != BlockType.CODE:
-            children = text_to_children(block_HTML_node.value)
-        else:
-            children = [LeafNode(None, block_HTML_node.value, None)]
+        ##if block_type != BlockType.CODE:
+            ##children = text_to_children(block_HTML_node.value)
+        ##else:
+            ##children = [LeafNode(None, block_HTML_node.value, None)]
 
         # add a new parentNode to blockNodeList
-        blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
+        # blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
 
     # put all the blocknodes in a parentnode div
     outerDivNode = ParentNode("div", blockNodeList, None)
