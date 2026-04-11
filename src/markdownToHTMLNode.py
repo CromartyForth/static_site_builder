@@ -3,7 +3,9 @@ from blocktypes import (
     block_to_block_type, 
     create_heading_html_node, 
     create_code_html_node,
-    create_unordered_list_html_node
+    create_unordered_list_html_node,
+    create_ordered_list_html_node,
+    create_paragraph_html_node
 )
 from markdownToBlocks import markdown_to_blocks
 from textToTextnodes import text_to_textnodes
@@ -20,6 +22,7 @@ def markdown_to_html_node(markdown):
         block_type = block_to_block_type(block)
 
         # create work in progress html node from block and blocktype. maybe make this a helper function
+        # helper functions could be refactored to return list to avoid splitlines running twice
         match block_type:
             case BlockType.HEADING:
                 block_HTML_node = create_heading_html_node(block)
@@ -28,42 +31,51 @@ def markdown_to_html_node(markdown):
 
             case BlockType.CODE:
                 block_HTML_node = create_code_html_node(block)
-                children = text_to_children(block_HTML_node.value)
-                blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
+                # text in a code block is not parsed further like the other blocks
+                children = [LeafNode("code", block_HTML_node.value, None)]
+                blockNodeList.append(ParentNode("pre", children, None))
             
             case BlockType.UNORDEREDLIST:
                 block_HTML_node = create_unordered_list_html_node(block)
-                block_children = block_HTML_node.value.split()
+                block_children = block_HTML_node.value.splitlines()
+                
+                # block of text needs to be treated line by line.
+                li_children = [] #list items
+                for block_child in block_children:
+                    children = text_to_children(block_child)
+                    li_children.append(ParentNode("li", children, None))
+
+                ul_parent = ParentNode("ul", li_children, None) #unorderedlist
+                
+                blockNodeList.append(ParentNode(block_HTML_node.tag, ul_parent, None))
+
+            case BlockType.ORDEREDLIST:
+                block_HTML_node = create_ordered_list_html_node(block)
+                block_children = block_HTML_node.value.splitlines()
                 
                 # block of text needs to be treated line by line for lists.
                 li_children = [] #list items
                 for block_child in block_children:
-                    children = text_to_children(child)
-                    li_children.append(ParentNode("li", block_child, None))
+                    children = text_to_children(block_child)
+                    li_children.append(ParentNode("li", children, None))
 
                 ol_parent = ParentNode("ol", li_children, None) #unorderedlist
                 
-                blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
+                blockNodeList.append(ParentNode(block_HTML_node.tag, ol_parent, None))
 
+            case BlockType.PARAGRAPH:
+                block_HTML_node = create_paragraph_html_node(block)
+                children = text_to_children(block_HTML_node.value)
+                blockNodeList.append(ParentNode("p", children, None))
 
-        # get the children from the parentNode.value
-        # assign the proper child HTMLnode objects to the block node
-        # unless you are a code block
-        ##if block_type != BlockType.CODE:
-            ##children = text_to_children(block_HTML_node.value)
-        ##else:
-            ##children = [LeafNode(None, block_HTML_node.value, None)]
-
-        # add a new parentNode to blockNodeList
-        # blockNodeList.append(ParentNode(block_HTML_node.tag, children, None))
 
     # put all the blocknodes in a parentnode div
     outerDivNode = ParentNode("div", blockNodeList, None)
 
     # generate html!
-    html = outerDivNode.to_html()
+    # html = outerDivNode.to_html()
     
-    return html
+    return outerDivNode
 
 
 def text_to_children(text):
@@ -80,7 +92,9 @@ def text_to_children(text):
         # split_nodes_image()
         # split_nodes_link()
 
-    leaf_nodes = text_node_to_html_node(text_nodes)
+    leaf_nodes = []
+    for item in text_nodes:
+        leaf_nodes.append(text_node_to_html_node(item))
     # so we have text nodes we can turn into html nodes
     # using text_node_to_html_node
         # which returns leaf nodes if the text node

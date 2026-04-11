@@ -63,30 +63,44 @@ def create_heading_html_node(block):
 
 def create_code_html_node(block):
     # remove code prefix and suffix
-    value = block.removePrefix("```")
+    value = block.removeprefix("```\n")
     value = value.removesuffix("```")
-
-    # remove newline
-    value = value.strip()
 
     return HTMLNode("code", value, None, None)
 
 
 def create_quote_html_node(block):
     # remove quote prefix and space from each line
-    lines = block.split()
+    lines = block.splitlines()
     new_string = ""
     for line in lines:
-        line = line.removePrefix("> ")
+        line = line.removeprefix("> ")
         new_string += line + "\n"
     
     return HTMLNode("blockquote", new_string, None, None)
 
 
 def create_unordered_list_html_node(block):
-    # do what ?!
-    
+    # these remove prefix functions can be refactored
+    # remove the prefix from each line
+    lines = block.splitlines()
+    new_string = ""
+    for line in lines:
+         line = line.removeprefix("- ")
+         new_string += line + "\n"
+    return HTMLNode("unordered_list", new_string, None, None)
 
+def create_ordered_list_html_node(block):
+    # remove the numbered prefix
+    lines = block.splitlines()
+    new_string = ""
+    for i, value in enumerate(lines):
+         line = line.removeprefix("- ")
+         new_string += line + "\n"
+    return HTMLNode("ordered_list", new_string, None, None)
 
-    
-            
+def create_paragraph_html_node(block):
+    # remove double \n\n
+    lines = block.split("\n")
+    new_string = " ".join(lines)
+    return HTMLNode("paragraph", new_string, None, None)
