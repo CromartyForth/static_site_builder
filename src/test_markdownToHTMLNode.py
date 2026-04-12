@@ -41,5 +41,27 @@ This is another paragraph with _italic_ text and `code` here
     
     def test_quotes(self):
         md = """
-
+> "This is **the** winter of our discontent."
+> "Seize **the** day boys!"
 """
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><quote>"This is <b>the</b> winter of our discontent."\n"Seize <b>the</b> day boys!"</quote></div>',
+        )
+
+    
+    def test_headings(self):
+        md = """
+# This is a h1 heading
+
+
+## This is a h2 heading
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><h1>"This is a h1 heading\n"</h1><h2>This is a h2 heading\n</h2></div>',
+        )

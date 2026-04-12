@@ -52,13 +52,13 @@ def create_heading_html_node(block):
     hTag = 0
     for x in block:
         if x != "#":
-            hTag = x + 1
+            hTag += 1
             break
     
     # remove "#"s from text
     value = block.removeprefix(("#" * hTag))
 
-    return HTMLNode(("h" + hTag), value, None, None)
+    return HTMLNode("h" + str(hTag), value, None, None)
 
 
 def create_code_html_node(block):
@@ -71,11 +71,12 @@ def create_code_html_node(block):
 
 def create_quote_html_node(block):
     # remove quote prefix and space from each line
-    lines = block.splitlines()
+    # keep the \n
+    lines = block.splitlines(True)
     new_string = ""
     for line in lines:
         line = line.removeprefix("> ")
-        new_string += line + "\n"
+        new_string += line
     
     return HTMLNode("blockquote", new_string, None, None)
 

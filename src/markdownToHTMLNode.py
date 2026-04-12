@@ -5,7 +5,8 @@ from blocktypes import (
     create_code_html_node,
     create_unordered_list_html_node,
     create_ordered_list_html_node,
-    create_paragraph_html_node
+    create_paragraph_html_node,
+    create_quote_html_node
 )
 from markdownToBlocks import markdown_to_blocks
 from textToTextnodes import text_to_textnodes
@@ -24,6 +25,12 @@ def markdown_to_html_node(markdown):
         # create work in progress html node from block and blocktype. maybe make this a helper function
         # helper functions could be refactored to return list to avoid splitlines running twice
         match block_type:
+            case BlockType.QUOTE:
+                block_HTML_node = create_quote_html_node(block)
+                children = text_to_children(block_HTML_node.value)
+                blockNodeList.append(ParentNode("quote", children, None))
+
+
             case BlockType.HEADING:
                 block_HTML_node = create_heading_html_node(block)
                 children = text_to_children(block_HTML_node.value)
