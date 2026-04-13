@@ -55,7 +55,7 @@ class ParentNode(HTMLNode):
         
         if self.children == [] or self.children is None:
             raise ValueError("Parent must have a child value")
-
+        
         # itterate over children
         child_strings = ""
         for child in self.children:

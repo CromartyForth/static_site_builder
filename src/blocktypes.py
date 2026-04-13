@@ -19,7 +19,7 @@ def block_to_block_type(block):
     lines = block.split("\n")
 
     # Headings 1-6# then a space
-    matches = re.fullmatch(r"^# .*", block)
+    matches = re.fullmatch(r"^#{1,6} .*", block)
     if matches != None:
         return BlockType.HEADING
 
@@ -52,11 +52,12 @@ def create_heading_html_node(block):
     hTag = 0
     for x in block:
         if x != "#":
-            hTag += 1
             break
+        hTag += 1
     
     # remove "#"s from text
     value = block.removeprefix(("#" * hTag))
+    value = value.strip()
 
     return HTMLNode("h" + str(hTag), value, None, None)
 
@@ -96,7 +97,7 @@ def create_ordered_list_html_node(block):
     lines = block.splitlines()
     new_string = ""
     for i, value in enumerate(lines):
-         line = line.removeprefix("- ")
+         line = value.removeprefix(str(i + 1) + ". ")
          new_string += line + "\n"
     return HTMLNode("ordered_list", new_string, None, None)
 

@@ -4,13 +4,18 @@ from blocktypes import BlockType, block_to_block_type
 class testBlockToBlockType(unittest.TestCase):
     # these test have no indents
 
-    def text_block_type_heading(self):
-        md="""# This is a heading!"""
+    def text_block_type_h1(self):
+        md="""# This is a h1 heading!"""
         result = block_to_block_type(md)
         self.assertEqual(result, BlockType.HEADING)
     
+    def text_block_type_h2(self):
+        md='## This is a h2 heading!'
+        result = block_to_block_type(md)
+        self.assertEqual(result, BlockType.HEADING)
+
     def text_block_type_not_heading(self):
-        md="""####### This is not a heading!"""
+        md="####### This is not a heading!"
         result = block_to_block_type(md)
         self.assertEqual(result, BlockType.PARAGRAPH)
 

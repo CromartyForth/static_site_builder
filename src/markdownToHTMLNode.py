@@ -8,6 +8,7 @@ from blocktypes import (
     create_paragraph_html_node,
     create_quote_html_node
 )
+
 from markdownToBlocks import markdown_to_blocks
 from textToTextnodes import text_to_textnodes
 from nodeTextToHTML import text_node_to_html_node
@@ -16,7 +17,7 @@ from htmlnode import HTMLNode, ParentNode, LeafNode
 def markdown_to_html_node(markdown):
     # split markdown into blocks
     blocks = markdown_to_blocks(markdown)
-
+    
     blockNodeList = []
     for block in blocks:
         # determine what each block is
@@ -52,9 +53,8 @@ def markdown_to_html_node(markdown):
                     children = text_to_children(block_child)
                     li_children.append(ParentNode("li", children, None))
 
-                ul_parent = ParentNode("ul", li_children, None) #unorderedlist
-                
-                blockNodeList.append(ParentNode(block_HTML_node.tag, ul_parent, None))
+                 #unorderedlist
+                blockNodeList.append(ParentNode("ul", li_children, None))
 
             case BlockType.ORDEREDLIST:
                 block_HTML_node = create_ordered_list_html_node(block)
@@ -66,9 +66,8 @@ def markdown_to_html_node(markdown):
                     children = text_to_children(block_child)
                     li_children.append(ParentNode("li", children, None))
 
-                ol_parent = ParentNode("ol", li_children, None) #unorderedlist
+                blockNodeList.append(ParentNode("ol", li_children, None)) #orderedlist
                 
-                blockNodeList.append(ParentNode(block_HTML_node.tag, ol_parent, None))
 
             case BlockType.PARAGRAPH:
                 block_HTML_node = create_paragraph_html_node(block)

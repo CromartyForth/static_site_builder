@@ -2,8 +2,7 @@ import unittest
 from markdownToHTMLNode import markdown_to_html_node
 
 class TestTextNode(unittest.TestCase):
-
-    
+  
 
     def test_codeblock(self):
         md = """
@@ -56,12 +55,37 @@ This is another paragraph with _italic_ text and `code` here
         md = """
 # This is a h1 heading
 
-
 ## This is a h2 heading
 """
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(
             html,
-            '<div><h1>"This is a h1 heading\n"</h1><h2>This is a h2 heading\n</h2></div>',
+            '<div><h1>This is a h1 heading</h1><h2>This is a h2 heading</h2></div>',
+        )
+
+    def test_unorderedlist(self):
+        md = """
+- I really
+- hate writing
+- in raw html
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><ul><li>I really</li><li>hate writing</li><li>in raw html</li></ul></div>',
+        )
+
+    def test_orderedlist(self):
+        md = """
+1. Item 1
+2. Item 2
+3. Item 3
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><ol><li>Item 1</li><li>Item 2</li><li>Item 3</li></ol></div>',
         )
