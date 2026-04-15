@@ -110,16 +110,3 @@ def text_to_children(text):
     return leaf_nodes
 
 
-
-
-"""
-    htmlnode
-    self.tag = tag
-    self.value = value
-    self.children = children
-    self.props = props # dictionary of key value pairs
-
-
-
-"""
-
