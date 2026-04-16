@@ -6,6 +6,13 @@ from extractTitle import extract_title
 source = "./static"
 destination = "./public"
 
+from_path = "here"
+dest_path = "there"
+template_path ="this"
+
+
+
+
 def copy_directory_contents(source, destination):
     # check destination directory exists
     if os.path.exists(destination):
