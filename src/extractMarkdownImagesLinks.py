@@ -3,12 +3,12 @@ from textnode import TextNode, TextType
 
 
 def extract_markdown_images(text):
-    matches = re.findall(r"!\[(.*?)\]\((https:\/\/.*?\.\w+)\)", text)
+    matches = re.findall(r"!\[(.*?)\]\((.*?\/.*?\.\w+)\)", text)
     return matches
-
+     
 
 def extract_markdown_links(text):
-    matches = re.findall(r"\[(.*?)\]\((https:\/\/.*?)\)", text)
+    matches = re.findall(r"\[(.*?)\]\((.*?\/.*?)\)", text)
     return matches
 
 def split_nodes_image(old_nodes):
@@ -84,6 +84,6 @@ def split_nodes_link(old_nodes):
 
         # add last node onto new_nodes unless it's empty
         if lastSplit[0] != "":
-            new_nodes.append(TextNode(lastSplit[0], TEXT))
+            new_nodes.append(TextNode(lastSplit[0], TextType.TEXT))
     
     return new_nodes

@@ -29,7 +29,7 @@ def markdown_to_html_node(markdown):
             case BlockType.QUOTE:
                 block_HTML_node = create_quote_html_node(block)
                 children = text_to_children(block_HTML_node.value)
-                blockNodeList.append(ParentNode("quote", children, None))
+                blockNodeList.append(ParentNode("blockquote", children, None))
 
 
             case BlockType.HEADING:

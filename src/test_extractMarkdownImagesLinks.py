@@ -89,6 +89,24 @@ class TestExtractMarkdownImagesLinks(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_localhost(self):
+        node = TextNode(
+            "This is text with an ![image](../local/image.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "../local/image.png"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode(
+                    "second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
     
 
     

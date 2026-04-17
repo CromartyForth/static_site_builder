@@ -76,7 +76,10 @@ def create_quote_html_node(block):
     lines = block.splitlines(True)
     new_string = ""
     for line in lines:
-        line = line.removeprefix("> ")
+        print(line)
+        line = line.removeprefix(">")
+        line = line.removeprefix(" ")
+        print(line)
         new_string += line
     
     return HTMLNode("blockquote", new_string, None, None)
@@ -102,7 +105,6 @@ def create_ordered_list_html_node(block):
     return HTMLNode("ordered_list", new_string, None, None)
 
 def create_paragraph_html_node(block):
-    # remove double \n\n
     lines = block.split("\n")
     new_string = " ".join(lines)
     return HTMLNode("paragraph", new_string, None, None)

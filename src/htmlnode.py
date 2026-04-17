@@ -35,10 +35,16 @@ class LeafNode(HTMLNode):
             return f"{self.value}"
         
         if self.props:
-            # render html tag with props
             props = self.props_to_html()
+
+            # render img with props
+            if self.tag == "img":
+                return f"<{self.tag} {props}/>"
+
+            # render html tag with props
             return f"<{self.tag} {props}>{self.value}</{self.tag}>"
         
+
         # render html tag
         return f"<{self.tag}>{self.value}</{self.tag}>"
     

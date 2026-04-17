@@ -1,16 +1,17 @@
 import os
 import shutil
 from textnode import TextNode, TextType
-from extractTitle import extract_title
+from generatePage import generate_page, generate_pages_recursive
 
 source = "./static"
 destination = "./public"
 
-from_path = "here"
-dest_path = "there"
-template_path ="this"
+from_path = "./content/index.md"
+dest_path = "./public/index.html"
+template_path ="./template.html"
 
-
+dir_path_content = "./content"
+dest_dir_path = "./public"
 
 
 def copy_directory_contents(source, destination):
@@ -44,7 +45,7 @@ def copy_tree(source, destination):
 
             if entry.is_dir():
                 path = os.path.join(destination, entry.name)
-                sub_dir = os.mkdir(path)
+                os.mkdir(path)
                 print(f'created {entry.path}')
                 copy_tree(entry.path, path)
 
@@ -54,15 +55,17 @@ def copy_tree(source, destination):
 
 def main ():
 
-    # split markdown into blocks
-
-    # extract title
-    extract_title(firstBlock)
-
     try:
         copy_directory_contents(source, destination)
     except ValueError as e:
         print(e)
+
+    try:
+        generate_pages_recursive(dir_path_content, template_path, dest_dir_path)
+
+    except Exception as e:
+        print("file error - " + str(e))
+
     return
 
 

@@ -89,3 +89,14 @@ This is another paragraph with _italic_ text and `code` here
             html,
             '<div><ol><li>Item 1</li><li>Item 2</li><li>Item 3</li></ol></div>',
         )
+    
+    def test_images(self):
+        md = """
+![JRR Tolkien sitting](/images/tolkien.png)
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><p><img src="/images/tolkien.png" alt="JRR Tolkien sitting"/></p></div>'
+        )
