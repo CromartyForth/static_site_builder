@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 from textnode import TextNode, TextType
 from generatePage import generate_page, generate_pages_recursive
@@ -54,6 +55,13 @@ def copy_tree(source, destination):
 
 
 def main ():
+    
+    # get cli args
+    if sys.argv[1]:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
+    print(basepath)
 
     try:
         copy_directory_contents(source, destination)
@@ -61,7 +69,7 @@ def main ():
         print(e)
 
     try:
-        generate_pages_recursive(dir_path_content, template_path, dest_dir_path)
+        generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath)
 
     except Exception as e:
         print("file error - " + str(e))
