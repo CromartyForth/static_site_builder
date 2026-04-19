@@ -5,14 +5,11 @@ from textnode import TextNode, TextType
 from generatePage import generate_page, generate_pages_recursive
 
 source = "./static"
-destination = "./public"
+destination = "./docs"
 
-from_path = "./content/index.md"
-dest_path = "./public/index.html"
 template_path ="./template.html"
 
 dir_path_content = "./content"
-dest_dir_path = "./public"
 
 
 def copy_directory_contents(source, destination):
@@ -57,7 +54,7 @@ def copy_tree(source, destination):
 def main ():
     
     # get cli args
-    if sys.argv[1]:
+    if len(sys.argv) > 1:
         basepath = sys.argv[1]
     else:
         basepath = "/"
@@ -69,7 +66,7 @@ def main ():
         print(e)
 
     try:
-        generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath)
+        generate_pages_recursive(dir_path_content, template_path, destination, basepath)
 
     except Exception as e:
         print("file error - " + str(e))
